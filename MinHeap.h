@@ -1,5 +1,3 @@
-//未利用仿函数进行比较
-
 #pragma once
 
 #include<iostream>
@@ -8,8 +6,16 @@
 using namespace std;
 
 // 建小堆  实现小堆的各项操作
-
 template<class T>
+struct Less
+{
+	bool operator()(const T& com1, const T& com2)
+	{
+		return com1->_weight < com2->_weight;
+	}
+};
+
+template<class T, class Compare = Less<T>>
 class MinHeap
 {
 public:
@@ -46,7 +52,7 @@ public:
 		}
 		return *this;
 	}
-	//添加数据
+	//********添加数据*************
 	void Push(const T x)
 	{
 		// 尾插 然后 上调
@@ -75,12 +81,12 @@ protected:
 		while (left < _array.size())
 		{
 			// 比较左右孩子，保证下标left为最小的节点下标
-			if (right < _array.size() && _array[right]< _array[left])
+			if (right < _array.size() && Compare()(_array[right], _array[left]))
 			{
 				left = right;
 			}
 			// 如果父节点大于左右孩子中较小的节点时，就交换这两个节点，要保证两个子节点都大于父节点
-			if (left<_array.size() && _array[left]< _array[parent])
+			if (left<_array.size() && Compare()( _array[left],_array[parent]))
 			{
 				// 交换之后还需继续 将相对较大的数循环向下调
 				swap(_array[left], _array[parent]);
@@ -101,7 +107,7 @@ protected:
 		int parent = (child - 1) / 2;
 		while (child>0)
 		{
-			if (_array[child]< _array[parent])
+			if (Compare()(_array[child],_array[parent]))
 			{
 				swap(_array[parent], _array[child]);
 				child = parent;
@@ -124,3 +130,15 @@ public:
 //	int array[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 //	MinHeap<int> mh(array,sizeof(array)/sizeof(int));
 //}
+
+
+
+
+
+
+
+
+
+
+
+
