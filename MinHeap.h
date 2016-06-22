@@ -5,12 +5,12 @@
 #include<assert.h>
 using namespace std;
 
-// ½¨Ğ¡¶Ñ  ÊµÏÖĞ¡¶ÑµÄ¸÷Ïî²Ù×÷
+// å»ºå°å †  å®ç°å°å †çš„å„é¡¹æ“ä½œ
 template<class T>
 struct Less
 {
 	bool operator()(const T& com1, const T& com2)
-	{
+	{  // ä»¥HuffmanNodeçš„æƒå€¼ä¸ºä¾æ®æ¯”è¾ƒå¤§å°ï¼Œè¿›è¡Œå †æ’åºè°ƒæ•´
 		return com1->_weight < com2->_weight;
 	}
 };
@@ -21,21 +21,21 @@ class MinHeap
 public:
 	MinHeap()
 	{}
-	//¹¹Ôìº¯Êı
+	//æ„é€ å‡½æ•°
 	MinHeap(const T* array, size_t size)
 	{
 		for (size_t i = 0; i < size; i++)
 		{
 			_array.push_back(array[i]);
 		}
-		//½¨¶Ñ
+		//å»ºå †
 		for (int start = (_array.size() - 1 - 1) / 2; start >= 0; --start)
 		{
-			// ´ÓÏÂÍùÉÏ ²¢ ´ÓµÚÒ»¸öÓĞº¢×ÓµÄ¸¸½Úµã¿ªÊ¼
+			// ä»ä¸‹å¾€ä¸Š å¹¶ ä»ç¬¬ä¸€ä¸ªæœ‰å­©å­çš„çˆ¶èŠ‚ç‚¹å¼€å§‹
 			AdjustDown(start);
 		}
 	}
-	//¿½±´¹¹Ôì
+	//æ‹·è´æ„é€ 
 	MinHeap(const MinHeap& hp)
 	{
 		for (size_t i = 0; i < hp._array.size(); i++)
@@ -43,7 +43,7 @@ public:
 			_array.push_back(hp._array[i]);
 		}
 	}
-	//¸³ÖµÔËËã·ûÖØÔØ
+	//èµ‹å€¼è¿ç®—ç¬¦é‡è½½
 	MinHeap &operator=(MinHeap hp)
 	{
 		if (this->_array != hp._array)
@@ -52,43 +52,43 @@ public:
 		}
 		return *this;
 	}
-	//********Ìí¼ÓÊı¾İ*************
+	//********æ·»åŠ æ•°æ®*************
 	void Push(const T x)
 	{
-		// Î²²å È»ºó ÉÏµ÷
+		// å°¾æ’ ç„¶å ä¸Šè°ƒ
 		_array.push_back(x);
 		AdjustUp(_array.size() - 1);
 	}
-	//É¾³ı¶Ñ¶¥
+	//åˆ é™¤å †é¡¶
 	void Pop()
 	{
 		swap(_array[0], _array[_array.size() - 1]);
 		_array.pop_back();
 		AdjustDown(0);
 	}
-	//·ÃÎÊ¸ù½Úµã
+	//è®¿é—®æ ¹èŠ‚ç‚¹
 	T& GetHeapTop()
 	{
 		assert(_array.size()>0);
 		return _array[0];
 	}
 protected:
-	//ÏÂµ÷
-	void AdjustDown(int parent)  // ½¨Ğ¡¶Ñ ½«´óÊıÏòÏÂµ÷
+	//ä¸‹è°ƒ
+	void AdjustDown(int parent)  // å»ºå°å † å°†å¤§æ•°å‘ä¸‹è°ƒ
 	{
 		size_t left = parent * 2 + 1;
 		size_t right = left + 1;
 		while (left < _array.size())
 		{
-			// ±È½Ï×óÓÒº¢×Ó£¬±£Ö¤ÏÂ±êleftÎª×îĞ¡µÄ½ÚµãÏÂ±ê
+			// æ¯”è¾ƒå·¦å³å­©å­ï¼Œä¿è¯ä¸‹æ ‡leftä¸ºæœ€å°çš„èŠ‚ç‚¹ä¸‹æ ‡
 			if (right < _array.size() && Compare()(_array[right], _array[left]))
 			{
 				left = right;
 			}
-			// Èç¹û¸¸½Úµã´óÓÚ×óÓÒº¢×ÓÖĞ½ÏĞ¡µÄ½ÚµãÊ±£¬¾Í½»»»ÕâÁ½¸ö½Úµã£¬Òª±£Ö¤Á½¸ö×Ó½Úµã¶¼´óÓÚ¸¸½Úµã
+			// å¦‚æœçˆ¶èŠ‚ç‚¹å¤§äºå·¦å³å­©å­ä¸­è¾ƒå°çš„èŠ‚ç‚¹æ—¶ï¼Œå°±äº¤æ¢è¿™ä¸¤ä¸ªèŠ‚ç‚¹ï¼Œè¦ä¿è¯ä¸¤ä¸ªå­èŠ‚ç‚¹éƒ½å¤§äºçˆ¶èŠ‚ç‚¹
 			if (left<_array.size() && Compare()( _array[left],_array[parent]))
 			{
-				// ½»»»Ö®ºó»¹Ğè¼ÌĞø ½«Ïà¶Ô½Ï´óµÄÊıÑ­»·ÏòÏÂµ÷
+				// äº¤æ¢ä¹‹åè¿˜éœ€ç»§ç»­ å°†ç›¸å¯¹è¾ƒå¤§çš„æ•°å¾ªç¯å‘ä¸‹è°ƒ
 				swap(_array[left], _array[parent]);
 				parent = left;
 				left = parent * 2 + 1;
@@ -100,10 +100,10 @@ protected:
 			}
 		}
 	}
-	//ÉÏµ÷
+	//ä¸Šè°ƒ
 	void AdjustUp(int child)
 	{
-		// ³ıÁËÎ²²åµÄÊıx ÆäËüÊı¾İÒÑ¾­°´ÕÕ¶ÑÅÅĞòÅÅºÃÁË ËùÒÔÖ»Ğè½«¸Õ¸ÕÎ²²åµÄÊıx²»¶ÏÍùÉÏµ÷ Ö±µ½½«Ëü·Åµ½ºÏÊÊµÄÎ»ÖÃ  
+		// é™¤äº†å°¾æ’çš„æ•°x å…¶å®ƒæ•°æ®å·²ç»æŒ‰ç…§å †æ’åºæ’å¥½äº† æ‰€ä»¥åªéœ€å°†åˆšåˆšå°¾æ’çš„æ•°xä¸æ–­å¾€ä¸Šè°ƒ ç›´åˆ°å°†å®ƒæ”¾åˆ°åˆé€‚çš„ä½ç½®  
 		int parent = (child - 1) / 2;
 		while (child>0)
 		{
@@ -115,14 +115,14 @@ protected:
 			}
 			else
 			{
-				// Èç¹ûÌøµ½ÕâÀï£¬¾ÍËµÃ÷´ÎĞòÒÑ¾­ÅÅºÃ£¬ÉÏÃæµÄÊı¶¼Ğ¡ÓÚx
+				// å¦‚æœè·³åˆ°è¿™é‡Œï¼Œå°±è¯´æ˜æ¬¡åºå·²ç»æ’å¥½ï¼Œä¸Šé¢çš„æ•°éƒ½å°äºx
 				break;
 			}
 		}
 	}
 
 public:
-	vector<T> _array;   //ÓÃvector´æ´¢¶ÑÖĞÊı¾İ
+	vector<T> _array;   //ç”¨vectorå­˜å‚¨å †ä¸­æ•°æ®
 };
 
 //void TestMinHeap()
