@@ -1,0 +1,11 @@
+ FileCompress
+利用Huffman编码实现文件解压缩和压缩
+
+_info[ch] 包括：unsigned char _ch   字符
+				LongType   _count  字符出现的次数
+				string   _code   哈夫曼编码
+
+_array[] 包括：_weight  权值
+			   _left
+			   _right
+			   
